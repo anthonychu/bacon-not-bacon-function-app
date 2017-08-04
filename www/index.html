@@ -28,8 +28,10 @@
   <div class="container" id="app" v-cloak>
     <div>
       <h1>Hello World!</h1>
+      <input type="text" placeholder="Image URL" class="form-control" v-model="url" />
+      <img v-attr="src: url">
     </div>
-    <div v-if="!savedPassword">
+    <!-- <div v-if="!savedPassword">
       <form class="form-signin" v-on:submit.prevent="onSubmit">
         <input type="password" placeholder="password" class="form-control" v-model="password" />
       </form>
@@ -46,7 +48,7 @@
             <td>{{ p.Name }}</td>
           </tr>
         </table>
-    </div>
+    </div> -->
 
   </div>
   <!-- /container -->
@@ -60,10 +62,7 @@
     var app = new Vue({
       el: '#app',
       data: {
-        savedPassword: '',
-        password: '',
-        winner: null,
-        participants: []
+        url: ''
       },
       methods: {
         onSubmit: function (event) {
