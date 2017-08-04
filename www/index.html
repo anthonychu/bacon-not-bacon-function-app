@@ -31,25 +31,6 @@
       <input type="text" placeholder="Image URL" class="form-control" v-model="url" />
       <img v-attr="src: url">
     </div>
-    <!-- <div v-if="!savedPassword">
-      <form class="form-signin" v-on:submit.prevent="onSubmit">
-        <input type="password" placeholder="password" class="form-control" v-model="password" />
-      </form>
-    </div>
-    <div v-else-if="winner">
-      <h1>Winner is {{ winner.Name }}!</h1>
-      <a v-on:click.stop.prevent="winner = null">close</a>
-    </div>
-    <div v-else>
-      <h3>Entries ({{ participants.length }})
-        <small><a v-on:click.stop.prevent="selectWinner" class="text-right">draw!</a></small></h2>
-        <table class="table">
-          <tr v-for="p in participants">
-            <td>{{ p.Name }}</td>
-          </tr>
-        </table>
-    </div> -->
-
   </div>
   <!-- /container -->
 
@@ -63,26 +44,6 @@
       el: '#app',
       data: {
         url: ''
-      },
-      methods: {
-        onSubmit: function (event) {
-          this.savedPassword = this.password;
-          superagent
-            .get('/api/participants')
-            .set('Password', this.password)
-            .end(function (err, res) {
-              if (err) {
-                alert("failed");
-              } else {
-                this.participants = res.body;
-              }
-            }.bind(this));
-        },
-        selectWinner: function (event) {
-          var winnerIndex = Math.floor(Math.random() * this.participants.length);
-          this.winner = this.participants[winnerIndex];
-          this.participants.splice(winnerIndex, 1);
-        }
       }
     });
   </script>
