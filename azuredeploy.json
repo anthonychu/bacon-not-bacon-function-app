@@ -1,6 +1,6 @@
 {
     "parameters": {
-        "name": {
+        "siteName": {
             "type": "string"
         },
         "computerVisionApiLocation": {
@@ -36,17 +36,17 @@
         }
     },
     "variables": {
-        "storageName": "[concat('baconstore', uniqueString(parameters('name'), resourceGroup().name))]",
+        "storageName": "[concat('baconstore', uniqueString(parameters('siteName'), resourceGroup().name))]",
         "functionAppLocation": "[resourceGroup().location]",
-        "computerVisionApiName": "[concat(parameters('name'), '-compvision')]"
+        "computerVisionApiName": "[concat(parameters('siteName'), '-compvision')]"
     },
     "resources": [
         {
-            "name": "[parameters('name')]",
+            "name": "[parameters('siteName')]",
             "type": "Microsoft.Web/sites",
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]",
-                "[resourceId('microsoft.insights/components/', parameters('name'))]",
+                "[resourceId('microsoft.insights/components/', parameters('siteName'))]",
                 "[resourceId('Microsoft.CognitiveServices/accounts', variables('computerVisionApiName'))]"
             ],
             "properties": {
@@ -70,7 +70,7 @@
                         },
                         {
                             "name": "WEBSITE_CONTENTSHARE",
-                            "value": "[concat(toLower(parameters('name')), 'a602')]"
+                            "value": "[concat(toLower(parameters('siteName')), 'a602')]"
                         },
                         {
                             "name": "WEBSITE_NODE_DEFAULT_VERSION",
@@ -78,7 +78,7 @@
                         },
                         {
                             "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                            "value": "[reference(resourceId('microsoft.insights/components/', parameters('name')), '2015-05-01').InstrumentationKey]"
+                            "value": "[reference(resourceId('microsoft.insights/components/', parameters('siteName')), '2015-05-01').InstrumentationKey]"
                         },
                         {
                             "name": "COMP_VISION_API_KEY",
@@ -102,7 +102,7 @@
                         }
                     ]
                 },
-                "name": "[parameters('name')]",
+                "name": "[parameters('siteName')]",
                 "clientAffinityEnabled": false
             },
             "resources": [
@@ -111,7 +111,7 @@
                     "name": "web",
                     "type": "sourcecontrols",
                     "dependsOn": [
-                        "[resourceId('Microsoft.Web/Sites', parameters('name'))]"
+                        "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]"
                     ],
                     "properties": {
                         "RepoUrl": "[parameters('repoUrl')]",
@@ -135,14 +135,14 @@
         },
         {
             "apiVersion": "2015-05-01",
-            "name": "[parameters('name')]",
+            "name": "[parameters('siteName')]",
             "type": "microsoft.insights/components",
             "location": "South Central US",
             "tags": {
-                "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/sites/', parameters('name'))]": "Resource"
+                "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/sites/', parameters('siteName'))]": "Resource"
             },
             "properties": {
-                "ApplicationId": "[parameters('name')]",
+                "ApplicationId": "[parameters('siteName')]",
                 "Request_Source": "IbizaWebAppExtensionCreate"
             }
         },
